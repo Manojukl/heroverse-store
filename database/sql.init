@@ -1,0 +1,55 @@
+CREATE DATABASE IF NOT EXISTS heroverse_db;
+USE heroverse_db;
+ 
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(200) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  created_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+ 
+CREATE TABLE IF NOT EXISTS products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(200) NOT NULL,
+  category ENUM('DC','Marvel') NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  description TEXT,
+  image_url VARCHAR(500)
+);
+ 
+CREATE TABLE IF NOT EXISTS cart (
+  cart_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1
+);
+ 
+CREATE TABLE IF NOT EXISTS orders (
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  status VARCHAR(50) DEFAULT 'completed',
+  transaction_id VARCHAR(100),
+  created_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+ 
+CREATE TABLE IF NOT EXISTS notifications (
+  notification_id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  message TEXT NOT NULL,
+  transaction_id VARCHAR(100),
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+ 
+-- Products seed data
+INSERT INTO products (name, category, price, description, image_url) VALUES
+('Batman Figure',       'DC',     24.99, '12-inch Batman action figure.',          'https://placehold.co/400x300/1a1a2e/ffffff?text=Batman'),
+('Superman T-Shirt',   'DC',     19.99, 'Premium Superman logo t-shirt.',          'https://placehold.co/400x300/003087/ffffff?text=Superman'),
+('Flash Toy',          'DC',     14.99, 'Flash toy car with light and sound.',     'https://placehold.co/400x300/cc0000/ffffff?text=Flash'),
+('Wonder Woman Poster','DC',      9.99, 'A3 Wonder Woman art print.',              'https://placehold.co/400x300/8b0000/ffffff?text=WonderWoman'),
+('Iron Man Figure',    'Marvel', 29.99, 'Iron Man Mark 50 figure.',                'https://placehold.co/400x300/8b0000/ffffff?text=IronMan'),
+('Spider-Man Toy',     'Marvel', 17.99, 'Web-slinging Spider-Man toy.',            'https://placehold.co/400x300/cc0000/ffffff?text=SpiderMan'),
+('Hulk Poster',        'Marvel',  9.99, 'A3 Hulk poster on glossy paper.',         'https://placehold.co/400x300/008000/ffffff?text=Hulk'),
+('Thor Hammer Replica','Marvel', 39.99, 'Mjolnir replica with display stand.',     'https://placehold.co/400x300/4b0082/ffffff?text=Thor');
